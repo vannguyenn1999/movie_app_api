@@ -15,6 +15,7 @@ class TopicViewSet(viewsets.ModelViewSet):
     serializer_class = TopicSerializer
     # permission_classes = [AllowAny]  # Allow any user to access this viewsetAllowAny
     queryset = Topic.objects.all()
+    pagination_class = None  
     
     def get_permissions(self):
         if self.action == 'update' or self.action == 'destroy':
@@ -62,6 +63,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     # permission_classes = [AllowAny]
     queryset = Category.objects.all()
+    pagination_class = None  
     
     def get_permissions(self):
         if self.action == 'update' or self.action == 'destroy':
@@ -110,11 +112,11 @@ class CountryViewSet(viewsets.ModelViewSet):
     serializer_class = CountrySerializer
     permission_classes = [AllowAny]
     queryset = Country.objects.all()
-    
-    # def get_permissions(self):
-    #     if self.action == 'update' or self.action == 'destroy':
-    #         return [IsAuthenticated()]
-    #     return [AllowAny()]
+    pagination_class = None  
+    def get_permissions(self):
+        if self.action == 'update' or self.action == 'destroy':
+            return [IsAuthenticated()]
+        return [AllowAny()]
     
     def get_object(self):
         return super().get_object()

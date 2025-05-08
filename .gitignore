@@ -1,7 +1,16 @@
 .vscode
 
 /env
+/media
+
+/api/migrations/__pycache__ 
+/api/__pycache__
+
+/movie/migrations/__pycache__ 
+/movie/__pycache__
+
+/actor/migrations/__pycache__ 
+/actor/__pycache__
+
 
 /web_movie_api/__pycache__
-/api/__pycache__
-/api/migrations/__pycache__ 

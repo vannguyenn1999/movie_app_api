@@ -65,7 +65,3 @@ class Country(models.Model):
     def __str__(self):
         return self.name
     
-# diễn viên
-class Actor(models.Model):
-    pass
-    
