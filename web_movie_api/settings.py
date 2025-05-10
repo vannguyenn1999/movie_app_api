@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'api',
     'actor',
-    # 'movie',
+    'movie',
     
 ]
 

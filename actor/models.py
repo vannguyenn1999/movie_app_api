@@ -14,7 +14,6 @@ class Actor(models.Model):
     
     name = models.CharField(max_length=255)
     info = models.TextField()
-    image = models.ImageField(upload_to='actor', blank=True, null=True)
     image = models.ImageField(_("Actor_Image"),upload_to='actor', null=True, blank=True)
     birthday = models.DateField(blank=True, null=True)
     gender = models.CharField(max_length=10, choices=options, default='Nam')
