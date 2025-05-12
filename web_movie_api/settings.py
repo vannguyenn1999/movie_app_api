@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'api',
     'actor',
     'movie',
+    'User',
     
 ]
 
@@ -128,6 +129,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'User.NewUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/

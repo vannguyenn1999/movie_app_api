@@ -5,3 +5,4 @@ psycopg2
 rest_framework_simplejwt
 corsheaders
 pillow
+pytz

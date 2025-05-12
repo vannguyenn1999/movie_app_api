@@ -20,7 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    path('api/' , include('User.urls') , name='auth'),
     path('api/', include('api.urls') , name='api'),
     path('api/', include('actor.urls') , name='api-actors'),
     path('api/', include('movie.urls') , name='api-movies'),
