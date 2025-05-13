@@ -28,6 +28,7 @@ class Movie(models.Model):
     imdb = models.FloatField(max_length=3, default=0.0)
     duration = models.CharField(max_length=10, default='0')
     image = models.ImageField(_("Movie_Image"),upload_to='movies', null=True, blank=True)
+    image_avatar = models.ImageField(_("Movie_Image_Avatar"),upload_to='movies/avatar/', null=True, blank=True)
     slug = models.SlugField(max_length=200, blank=True, null=True)
     language = models.CharField(max_length=10, choices=options, default='English')
     created_at = models.DateTimeField(auto_now_add=True)
