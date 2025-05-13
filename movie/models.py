@@ -32,6 +32,12 @@ class Movie(models.Model):
     language = models.CharField(max_length=10, choices=options, default='English')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    # Hiển thị nên banner ở header
+    is_banner = models.BooleanField(default=False)
+
+    # Hiển thị ở trang quảng cáo
+    is_ads = models.BooleanField(default=False)
     
     category = models.ManyToManyField(Category, blank=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, blank=True, null=True)
