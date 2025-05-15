@@ -106,12 +106,12 @@ class MovieViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='get-movies-header', permission_classes=[permissions.AllowAny])
     def get_movies_header(self, request):
-        movies = Movie.objects.filter(is_banner=True)
+        movies = Movie.objects.filter(is_banner=True)[:6]
         serializer = self.get_serializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'], url_path='get-movies-ads', permission_classes=[permissions.AllowAny])
     def get_movies_ads(self, request):
-        movies = Movie.objects.filter(is_ads=True)
+        movies = Movie.objects.filter(is_ads=True)[:6]
         serializer = self.get_serializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
