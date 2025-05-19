@@ -16,6 +16,7 @@ class BaseModelViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['update', 'destroy']:
+            return [AllowAny()]
             return [IsAuthenticated()]
         return [AllowAny()]
 
