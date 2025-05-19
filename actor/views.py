@@ -13,7 +13,7 @@ class ActorViewSet(viewsets.ModelViewSet):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
     permission_classes = [permissions.AllowAny]
-    search_fields = ['name']
+    search_fields = ['name' , 'slug']
 
     # def get_permissions(self):
     #     if self.action == 'update' or self.action == 'destroy':

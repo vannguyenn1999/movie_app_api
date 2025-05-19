@@ -16,7 +16,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     # ['title', 'slug', 'actor__slug' , 'category__slug' , 'country__slug' , 'topic__slug']
-    search_fields = ['title']
+    search_fields = ['title', 'slug', 'actor__slug' , 'category__slug' , 'country__slug' , 'topic__slug']
 
     def get_permissions(self):
         if self.action in ['update', 'destroy', 'post']:
@@ -114,5 +114,25 @@ class MovieViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='get-movies-ads', permission_classes=[permissions.AllowAny])
     def get_movies_ads(self, request):
         movies = Movie.objects.filter(is_ads=True)[:6]
+        serializer = self.get_serializer(movies, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['get'], url_path='get-suggestion-movie', permission_classes=[permissions.AllowAny])
+    def get_suggestion_movies(self, request):
+        self.pagination_class = None
+        if "actor" in request.query_params :
+            actor_slug = request.query_params.get('actor', '')
+            movies = Movie.objects.filter(actor__slug=actor_slug)[:10]
+        elif "topic" in request.query_params :
+            topic_slug = request.query_params.get('topic', '')
+            movies = Movie.objects.filter(topic__slug=topic_slug)[:10]
+        elif "category" in request.query_params :
+            category_slug = request.query_params.get('category', '')
+            movies = Movie.objects.filter(category__slug=category_slug)[:10]
+        elif "country" in request.query_params :
+            country_slug = request.query_params.get('country', '')
+            movies = Movie.objects.filter(country__slug=country_slug)[:10]
+        else:
+            return Response([], status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = self.get_serializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
