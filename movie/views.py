@@ -15,6 +15,7 @@ from actor.models import Actor
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    # ['title', 'slug', 'actor__slug' , 'category__slug' , 'country__slug' , 'topic__slug']
     search_fields = ['title']
 
     def get_permissions(self):
