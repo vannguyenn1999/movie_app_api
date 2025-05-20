@@ -7,25 +7,25 @@ from actor.models import Actor
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']  # Chỉ định các trường bạn muốn serialize
+        fields = ['id', 'name' , 'slug']  # Chỉ định các trường bạn muốn serialize
 
 
 class CountrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Country
-        fields = ['id', 'name']
+        fields = ['id', 'name' , 'slug']  # Chỉ định các trường bạn muốn serialize
 
 
 class ActorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Actor
-        fields = ['id', 'name' , 'image']
+        fields = ['id', 'name' , 'image' , 'slug']
 
 
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
-        fields = ['id', 'title']
+        fields = ['id', 'title' , 'slug']
 
 
 class MovieSerializer(serializers.ModelSerializer):

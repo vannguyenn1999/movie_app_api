@@ -121,18 +121,18 @@ class MovieViewSet(viewsets.ModelViewSet):
     def get_suggestion_movies(self, request):
         self.pagination_class = None
         if "actor" in request.query_params :
-            actor_slug = request.query_params.get('actor', '')
-            movies = Movie.objects.filter(actor__slug=actor_slug)[:10]
+            actor_slug = request.query_params.get('actor', '').split(',')
+            movies = Movie.objects.filter(actor__slug__ing=actor_slug).distinct()
         elif "topic" in request.query_params :
-            topic_slug = request.query_params.get('topic', '')
-            movies = Movie.objects.filter(topic__slug=topic_slug)[:10]
+            topic_slug = request.query_params.get('topic', '').split(',')
+            movies = Movie.objects.filter(topic__slug__ing=topic_slug).distinct()
         elif "category" in request.query_params :
-            category_slug = request.query_params.get('category', '')
-            movies = Movie.objects.filter(category__slug=category_slug)[:10]
+            category_slug = request.query_params.get('category', '').split(',')
+            movies = Movie.objects.filter(category__slug__in=category_slug).distinct()
         elif "country" in request.query_params :
-            country_slug = request.query_params.get('country', '')
-            movies = Movie.objects.filter(country__slug=country_slug)[:10]
+            country_slug = request.query_params.get('country', '').split(',')
+            movies = Movie.objects.filter(country__slug__ing=country_slug).distinct()
         else:
             return Response([], status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = self.get_serializer(movies, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data if len(serializer.data) < 10 else serializer.data[:10], status=status.HTTP_200_OK)
