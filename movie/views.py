@@ -122,16 +122,16 @@ class MovieViewSet(viewsets.ModelViewSet):
         self.pagination_class = None
         if "actor" in request.query_params :
             actor_slug = request.query_params.get('actor', '').split(',')
-            movies = Movie.objects.filter(actor__slug__ing=actor_slug).distinct()
+            movies = Movie.objects.filter(actor__slug__in=actor_slug).distinct()
         elif "topic" in request.query_params :
             topic_slug = request.query_params.get('topic', '').split(',')
-            movies = Movie.objects.filter(topic__slug__ing=topic_slug).distinct()
+            movies = Movie.objects.filter(topic__slug__in=topic_slug).distinct()
         elif "category" in request.query_params :
             category_slug = request.query_params.get('category', '').split(',')
             movies = Movie.objects.filter(category__slug__in=category_slug).distinct()
         elif "country" in request.query_params :
             country_slug = request.query_params.get('country', '').split(',')
-            movies = Movie.objects.filter(country__slug__ing=country_slug).distinct()
+            movies = Movie.objects.filter(country__slug__in=country_slug).distinct()
         else:
             return Response([], status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = self.get_serializer(movies, many=True)
