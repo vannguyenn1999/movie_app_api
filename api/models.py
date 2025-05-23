@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
-
+from django.utils import timezone
 
 #  ?  chủ đề
 class Topic(models.Model):
@@ -9,7 +9,12 @@ class Topic(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True , null=True)
     
+    class Meta:
+        # ordering = ['-updated_at', '-created_at']
+        ordering = ['-created_at', '-updated_at']
+    
     def save(self, *args, **kwargs):
+        self.updated_at = timezone.now()
         if not self.slug:
             base_slug = slugify(self.title)  # Chuyển name thành slug cơ bản
             slug = base_slug
@@ -22,6 +27,7 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.title
+    
 
 #  ? Thể loại    
 class Category(models.Model):
@@ -29,6 +35,10 @@ class Category(models.Model):
     slug = models.SlugField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True , null=True)
+    
+    class Meta:
+        # ordering = ['-updated_at', '-created_at']
+        ordering = ['-created_at', '-updated_at']
     
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -50,6 +60,10 @@ class Country(models.Model):
     slug = models.SlugField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True , null=True)
+    
+    class Meta:
+        # ordering = ['-updated_at', '-created_at']
+        ordering = ['-created_at', '-updated_at']
     
     def save(self, *args, **kwargs):
         # if not self.slug:
