@@ -22,6 +22,10 @@ class Actor(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(blank=True , null=True)
     
+    class Meta:
+        # ordering = ['-updated_at', '-created_at']
+        ordering = ['-created_at', '-updated_at']
+    
     def save(self, *args, **kwargs):
         # if not self.slug:
         base_slug = slugify(self.name)  # Chuyển name thành slug cơ bản

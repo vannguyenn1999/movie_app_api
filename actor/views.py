@@ -26,7 +26,11 @@ class ActorViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.data
-        instance.updated_at = timezone.now()  # Cập nhật thời gian hiện tại
+        instance.updated_at = timezone.now()
+        if instance.image: 
+            image_path = instance.image.path
+            if os.path.exists(image_path):
+                os.remove(image_path)
         partial = kwargs.pop('partial', False)
         serializer = self.get_serializer(instance,  data=data , partial=partial)
         if serializer.is_valid():
