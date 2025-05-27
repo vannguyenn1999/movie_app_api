@@ -46,6 +46,10 @@ class Movie(models.Model):
     actor = models.ManyToManyField(Actor, blank=True)
     topic = models.ManyToManyField(Topic, blank=True)
     
+    class Meta:
+        # ordering = ['-updated_at', '-created_at']
+        ordering = ['-created_at', '-updated_at']
+    
     
     def save(self, *args, **kwargs):
         # if not self.slug:

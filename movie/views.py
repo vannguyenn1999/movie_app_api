@@ -10,14 +10,15 @@ from .serializers import MovieSerializer
 from .models import Movie
 from api.models import Category, Country, Topic
 from actor.models import Actor
-
+from web_movie_api.pagination import CustomPagination
 
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     # ['title', 'slug', 'actor__slug' , 'category__slug' , 'country__slug' , 'topic__slug']
     search_fields = ['title', 'slug', 'actor__slug' , 'category__slug' , 'country__slug' , 'topic__slug']
-
+    pagination_class = CustomPagination
+    
     def get_permissions(self):
         if self.action in ['update', 'destroy', 'post']:
             return [permissions.AllowAny()]
