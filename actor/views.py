@@ -3,6 +3,7 @@ from rest_framework import viewsets, permissions , status
 from rest_framework.response import Response
 from django.db import transaction
 from django.utils import timezone
+from django.db import models
 
 import os
 
@@ -24,6 +25,17 @@ class ActorViewSet(viewsets.ModelViewSet):
     
     def get_object(self):
         return super().get_object()
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search = self.request.query_params.get('search')
+        if search:
+            keywords = [kw.strip() for kw in search.split(',') if kw.strip()]
+            q = models.Q()
+            for kw in keywords:
+                q |= models.Q(name__icontains=kw) | models.Q(slug__icontains=kw)                
+            queryset = queryset.filter(q).distinct()
+        return queryset
     
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
