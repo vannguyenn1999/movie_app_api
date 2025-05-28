@@ -8,18 +8,7 @@ from actor.models import Actor
 # Create your models here.
 class Movie(models.Model):
     
-    options = (
-        ('English', 'English'),
-        ('Vietnamese', 'Vietnamese'),
-        ('Chinese', 'Chinese'),
-        ('Japanese', 'Japanese'),
-        ('Korean', 'Korean'),
-        ('French', 'French'),
-        ('Spanish', 'Spanish'),
-        ('German', 'German'),
-        ('Italian', 'Italian'),
-        ('Russian', 'Russian'), 
-    )
+    
     
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -31,7 +20,7 @@ class Movie(models.Model):
     image_avatar = models.ImageField(_("Movie_Image_Avatar"),upload_to='movies/avatar/', null=True, blank=True)
     video = models.FileField(_("Videos"),upload_to='videos/', null=True, blank=True)
     slug = models.SlugField(max_length=200, blank=True, null=True)
-    language = models.CharField(max_length=10, choices=options, default='English')
+    language = models.CharField(max_length=10, default='English')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
