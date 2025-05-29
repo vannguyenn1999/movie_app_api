@@ -66,7 +66,14 @@ class MovieViewSet(viewsets.ModelViewSet):
         data = request.data
 
         # Xóa các tệp cũ nếu có
-        self.delete_files(instance, ['image', 'image_avatar', 'video'])
+        if("image" in data):
+            self.delete_files(instance, ['image'])
+            
+        if("image_avatar" in data):
+            self.delete_files(instance, ['image_avatar'])
+            
+        if("video" in data):
+            self.delete_files(instance, ['video'])
 
         # Cập nhật các trường thông thường
         serializer = self.get_serializer(instance, data=data, partial=True)

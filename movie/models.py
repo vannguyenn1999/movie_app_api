@@ -7,9 +7,6 @@ from actor.models import Actor
 
 # Create your models here.
 class Movie(models.Model):
-    
-    
-    
     title = models.CharField(max_length=255)
     description = models.TextField()
     release_date = models.DateField()

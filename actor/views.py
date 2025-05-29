@@ -41,10 +41,11 @@ class ActorViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         data = request.data
         instance.updated_at = timezone.now()
-        if instance.image: 
-            image_path = instance.image.path
-            if os.path.exists(image_path):
-                os.remove(image_path)
+        if "image" in data:
+            if instance.image: 
+                image_path = instance.image.path
+                if os.path.exists(image_path):
+                    os.remove(image_path)
         partial = kwargs.pop('partial', False)
         serializer = self.get_serializer(instance,  data=data , partial=partial)
         if serializer.is_valid():
