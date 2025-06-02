@@ -212,3 +212,6 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+FILE_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024 # 100 Mb limit
