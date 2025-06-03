@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie
+from .models import Movie , TopMovie
 from api.models import Category, Country, Topic
 from actor.models import Actor
 
@@ -37,3 +37,10 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'  # Hoặc chỉ định các trường cụ thể mà bạn muốn serialize
+        
+class TopMovieSerializer(serializers.ModelSerializer):
+    movie = MovieSerializer(read_only=True)
+
+    class Meta:
+        model = TopMovie
+        fields = '__all__' 

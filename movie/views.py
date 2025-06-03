@@ -6,8 +6,8 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 import os
 
-from .serializers import MovieSerializer
-from .models import Movie
+from .serializers import MovieSerializer , TopMovieSerializer
+from .models import Movie , TopMovie
 from api.models import Category, Country, Topic
 from actor.models import Actor
 from web_movie_api.pagination import CustomPagination
@@ -144,3 +144,47 @@ class MovieViewSet(viewsets.ModelViewSet):
             return Response([], status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         serializer = self.get_serializer(movies, many=True)
         return Response(serializer.data if len(serializer.data) < 10 else serializer.data[:10], status=status.HTTP_200_OK)
+    
+    
+    
+class TopMovieViewSet(viewsets.ModelViewSet):
+    queryset = TopMovie.objects.all()
+    serializer_class = TopMovieSerializer
+    pagination_class = None
+    
+    def get_permissions(self):
+        if self.action in ['update', 'destroy', 'post']:
+            return [permissions.AllowAny()]
+        return [permissions.AllowAny()]
+    
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        data = request.data
+        movie_object = get_object_or_404(Movie, id=data["movie"])
+        instance.movie = movie_object
+        serializer = self.get_serializer(instance, data=data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def destroy(self, request, *args, **kwargs):
+        ids_to_delete = request.data.get("ids", [])
+        if not ids_to_delete or not isinstance(ids_to_delete, list):
+            return Response({"error": "Invalid or missing 'ids' parameter"}, status=status.HTTP_400_BAD_REQUEST)
+
+        existing_movies = TopMovie.objects.filter(id__in=ids_to_delete)
+        existing_ids = list(existing_movies.values_list('id', flat=True))
+        non_existing_ids = set(ids_to_delete) - set(existing_ids)
+
+        if non_existing_ids:
+            return Response(
+                {"error": f"The following IDs do not exist: {list(non_existing_ids)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            with transaction.atomic():
+                existing_movies.delete()
+            return Response({"message": f"Successfully deleted {len(existing_ids)} records"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

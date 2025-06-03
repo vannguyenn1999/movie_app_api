@@ -50,3 +50,13 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+    
+class TopMovie(models.Model):
+    movie = models.ForeignKey(Movie ,on_delete=models.CASCADE, blank=True, null=True)
+    level = models.IntegerField(default=5)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # ordering = ['-updated_at', '-created_at']
+        ordering = ['level']
