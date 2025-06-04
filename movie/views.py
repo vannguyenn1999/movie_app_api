@@ -125,6 +125,20 @@ class MovieViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(movies, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['get'], url_path='get-new-movies', permission_classes=[permissions.AllowAny])
+    def get_new_movies(self, request):
+        movies = Movie.objects.all().order_by('-created_at')[:10]
+        data = [
+        {
+            "id" : movie.id,
+            "title": movie.title,
+            "image": request.build_absolute_uri(movie.image.url) if movie.image else "",
+            "slug": movie.slug
+        }
+        for movie in movies
+    ]
+        return Response(data, status=status.HTTP_200_OK)
+    
     @action(detail=False, methods=['get'], url_path='get-suggestion-movie', permission_classes=[permissions.AllowAny])
     def get_suggestion_movies(self, request):
         self.pagination_class = None
