@@ -157,11 +157,25 @@ class TopMovieViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return [permissions.AllowAny()]
     
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        serializer = self.get_serializer(data=data)
+        
+        movie_object = get_object_or_404(Movie, id=data["movie"])
+        if TopMovie.objects.filter(movie=movie_object).exists():
+            return Response({"msg": "Phim đã tồn tại trong TopMovie!"}, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            instance = serializer.save()
+            instance.movie = movie_object
+            instance.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         data = request.data
-        movie_object = get_object_or_404(Movie, id=data["movie"])
-        instance.movie = movie_object
+        # movie_object = get_object_or_404(Movie, id=data["movie"])
+        # instance.movie = movie_object
         serializer = self.get_serializer(instance, data=data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()

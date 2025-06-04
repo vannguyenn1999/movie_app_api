@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+
 from .models import Movie , TopMovie
 from api.models import Category, Country, Topic
 from actor.models import Actor
@@ -39,7 +41,18 @@ class MovieSerializer(serializers.ModelSerializer):
         fields = '__all__'  # Hoặc chỉ định các trường cụ thể mà bạn muốn serialize
         
 class TopMovieSerializer(serializers.ModelSerializer):
+    level = serializers.IntegerField()
     movie = MovieSerializer(read_only=True)
+
+    def validate(self, attrs):
+        # Kiểm tra level duy nhất
+        if TopMovie.objects.filter(level=attrs.get('level')).exists():
+            raise serializers.ValidationError({"msg": "Xếp hạng đã tồn tại !"})
+        
+        # Kiểm tra level > 10
+        if int(attrs.get('level', 0)) > 10:
+            raise serializers.ValidationError({"msg": "Xếp hạng không được quá 10"})
+        return attrs
 
     class Meta:
         model = TopMovie
