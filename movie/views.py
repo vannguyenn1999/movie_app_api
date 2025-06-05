@@ -19,6 +19,20 @@ class MovieViewSet(viewsets.ModelViewSet):
     search_fields = ['title', 'slug', 'actor__slug' , 'category__slug' , 'country__slug' , 'topic__slug']
     pagination_class = CustomPagination
     
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     search = self.request.query_params.get('search')
+    #     if search:
+    #         # Tìm kiếm phim theo title (hoặc slug tuỳ bạn)
+    #         matched_movies = queryset.filter(title__icontains=search)
+    #         # Tăng count_search cho các phim tìm thấy
+    #         for movie in matched_movies:
+    #             movie.count_search = (movie.count_search or 0) + 1
+    #             movie.save(update_fields=['count_search'])
+    #         # Bạn có thể tuỳ chỉnh lại filter bên dưới nếu muốn
+    #         queryset = matched_movies
+    #     return queryse
+    
     def get_permissions(self):
         if self.action in ['update', 'destroy', 'post']:
             return [permissions.AllowAny()]

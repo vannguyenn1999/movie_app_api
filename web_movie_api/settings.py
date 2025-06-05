@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import dj_database_url
 from pathlib import Path
 import os
 from datetime import timedelta
@@ -97,6 +98,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+DATABASES["default"] = dj_database_url.parse("postgresql://web_api_movie_render_user:woz48wn5DmX37wEs9Tjg6Z6TwUBnavNf@dpg-d10l4kp5pdvs73a9gkag-a.oregon-postgres.render.com/web_api_movie_render")
 
 
 # Password validation
